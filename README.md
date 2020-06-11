@@ -19,4 +19,7 @@ Caution:
 The code has not been tested, errors could occure
 I will do some tests, and tell you when all of them succeded
 
+07/06/2020:
+The constuctors work as expected now, some files have been updated
+
 Updates in future might come, but not in the next weeks
