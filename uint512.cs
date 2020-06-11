@@ -14,6 +14,7 @@ namespace Big_Ints_.NET
         public Uint512(BitArray array) : base(array) { }
         public Uint512(int Arg) : base(Arg) { }
         public Uint512(ulong Arg) : base(Arg) { }
+        public Uint512(IBigInts.BigIntsBaseConstraints Arg) : base(Arg) { }
 
 
         public static Uint512 operator ++(Uint512 Arg) => Arg.Add(1);

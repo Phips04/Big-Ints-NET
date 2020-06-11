@@ -14,6 +14,7 @@ namespace Big_Ints_.NET
         public Uint256(BitArray array) : base(array) { }
         public Uint256(int Arg) : base(Arg) { }
         public Uint256(ulong Arg) : base(Arg) { }
+        public Uint256(IBigInts.BigIntsBaseConstraints Arg) : base(Arg) { }
 
 
         public static Uint256 operator ++(Uint256 Arg) => Arg.Add(1);

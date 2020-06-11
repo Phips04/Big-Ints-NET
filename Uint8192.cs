@@ -14,6 +14,7 @@ namespace Big_Ints_.NET
         public Uint8192(BitArray array) : base(array) { }
         public Uint8192(int Arg) : base(Arg) { }
         public Uint8192(ulong Arg) : base(Arg) { }
+        public Uint8192(IBigInts.BigIntsBaseConstraints Arg) : base(Arg) { }
 
 
         public static Uint8192 operator ++(Uint8192 Arg) => Arg.Add(1);

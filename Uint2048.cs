@@ -14,6 +14,7 @@ namespace Big_Ints_.NET
         public Uint2048(BitArray array) : base(array) { }
         public Uint2048(int Arg) : base(Arg) { }
         public Uint2048(ulong Arg) : base(Arg) { }
+        public Uint2048(IBigInts.BigIntsBaseConstraints Arg) : base(Arg) { }
 
 
         public static Uint2048 operator ++(Uint2048 Arg) => Arg.Add(1);

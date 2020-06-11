@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -25,7 +26,7 @@ namespace Big_Ints_.NET
             BitArray NewArg;
 
             //Data = Arg;
-            if (Arg.Length != 0 && Arg[Arg.Length - 1] == false)
+            if (Arg.Length != 0 && Arg[^1] == false)
             {
                 int UnsignificantBits = 0;
                 while(Arg[Arg.Length - UnsignificantBits - 1] == false)

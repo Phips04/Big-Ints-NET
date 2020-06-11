@@ -11,6 +11,7 @@ namespace Big_Ints_.NET
         public Uint128(BitArray array) : base(array) { }
         public Uint128(int Arg) : base(Arg) { }
         public Uint128(ulong Arg) : base(Arg) { }
+        public Uint128(IBigInts.BigIntsBaseConstraints Arg) : base(Arg) { }
 
 
         public static Uint128 operator ++ (Uint128 Arg) => Arg.Add(1);
