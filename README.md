@@ -15,15 +15,4 @@ The types give the following arithmetic methods to their objects
 -Logarithm
 -Square root
 
-Caution:
-The code has not been tested, errors could occure
-I will do some tests, and tell you when all of them succeded
-
-07/06/2020:
-The constuctors work as expected now, some files have been updated
-
-13/06/2020
-Large parts of the arithmetic functions have been tested, the private member of BigIntsBase.cs 'Internal_Log' failed,
-sqrt has not been tested already.
-
 Updates in future might come, but not in the next weeks
