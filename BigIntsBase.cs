@@ -130,9 +130,9 @@ namespace Big_Ints_.NET
         {
             ulong result = 0;
 
-            if (FirstIsSmaller(Uint64ToBitArray(int.MaxValue, Arg.Length), Arg))
+            if (FirstIsSmaller(Uint64ToBitArray(ulong.MaxValue, Arg.Length), Arg))
             {
-                throw new Exception("Arithmetic overflow");
+                throw new ArgumentException("Arithmetic overflow");
             }
 
             for (int i = 0; i < 64; i++)
@@ -201,6 +201,19 @@ namespace Big_Ints_.NET
             }
 
             return false;
+        }
+
+        private static bool CompareBitArrays(BitArray First, BitArray Second)
+        {
+            for (int i = 0; i < First.Length; i++)
+            {
+                if (First[i] != Second[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
         #endregion
 
@@ -451,7 +464,7 @@ namespace Big_Ints_.NET
         #region Division
         private static BitArray Internal_Divide(BitArray Arg1, BitArray Arg2)
         {
-            if (Arg2 == new BitArray(Arg2.Length, false))
+            if (CompareBitArrays(Arg2, new BitArray(Arg2.Length, false)))
             {
                 throw new ArithmeticException("Argument was '0', division by '0' is not defined");
             }
@@ -630,8 +643,10 @@ namespace Big_Ints_.NET
 
         public T Mod(ulong Arg)
         {
-            T Result = new T();
-            Internal_Mod(Data, Uint64ToBitArray(Arg, Data.Length));
+            T Result = new T
+            {
+                Data = Internal_Mod(Data, Uint64ToBitArray(Arg, Data.Length))
+            };
             return Result;
 
         }
@@ -655,17 +670,17 @@ namespace Big_Ints_.NET
         #region Logarithm
         private static BitArray Internal_Log(BitArray Powres, BitArray Base)
         {
-            if (Base == new BitArray(Base.Length, false))
+            if (CompareBitArrays(Base, new BitArray(Base.Length, false)))
             {
                 throw new ArgumentException("Argument was '0', logarithm which base = '0' is not defined");
             }
 
-            if (Base == Uint64ToBitArray(1, Base.Length))
+            if (CompareBitArrays(Base, Uint64ToBitArray(1, Base.Length)))
             {
                 throw new ArithmeticException("Base was '1', logarithm which base is 1 is not defined");
             }
 
-            if (Powres == new BitArray(Powres.Length, false))
+            if (CompareBitArrays(Powres, new BitArray(Powres.Length, false)))
             {
                 throw new ArgumentException("The value of the object calling the function 'log(uint128 base)'" +
                     " was '0', logarithm with exponent = '0' is not defined");
@@ -677,7 +692,7 @@ namespace Big_Ints_.NET
             }
 
             int CurrentPosition = Base.Length / (int)TryToUlong_(Base);
-            int CurrentOffsetLength = Base.Length / (2 * (int)TryToUlong_(Base) + 1);
+            int CurrentOffsetLength = Base.Length / (2 * (int)TryToUlong_(Base)) + 1;
 
             while (true)
             {
@@ -687,14 +702,14 @@ namespace Big_Ints_.NET
                     return Uint64ToBitArray((ulong)CurrentPosition, Powres.Length);
                 }
 
-                if (CurrentPosition <= 1)
-                {
-                    return new BitArray(Powres.Length, false);
-                }
 
                 if (!FirstIsSmaller(Powres, Internal_Pow(Base, Uint64ToBitArray((ulong)CurrentPosition, Base.Length))))
                 {
                     CurrentPosition += CurrentOffsetLength;
+                    if (CurrentOffsetLength % 2 != 0)
+                    {
+                        CurrentOffsetLength++;
+                    }
                     CurrentOffsetLength /= 2;
                     continue;
                 }
@@ -702,6 +717,10 @@ namespace Big_Ints_.NET
                 if (FirstIsSmaller(Powres, Internal_Pow(Base, Uint64ToBitArray((ulong)CurrentPosition, Base.Length))))
                 {
                     CurrentPosition -= CurrentOffsetLength;
+                    if (CurrentOffsetLength % 2 != 0)
+                    {
+                        CurrentOffsetLength++;
+                    }
                     CurrentOffsetLength /= 2;
                     continue;
                 }
@@ -748,14 +767,9 @@ namespace Big_Ints_.NET
         #region Square root
         private static BitArray Internal_Sqrt(BitArray Arg)
         {
-            if (Arg == new BitArray(Arg.Length, false))
+            if (CompareBitArrays(Arg, new BitArray(Arg.Length, false)))
             {
                 return new BitArray(Arg.Length, false);
-            }
-
-            if (Arg == Uint64ToBitArray(1, Arg.Length))
-            {
-                return Uint64ToBitArray(1, Arg.Length);
             }
 
             //BitArray CurrentPosition = new BitArray(Arg.Length / 2, true);
@@ -807,6 +821,11 @@ namespace Big_Ints_.NET
         #region Factorial
         private static BitArray Internal_Factorial(BitArray Arg)
         {
+            if (CompareBitArrays(Arg, new BitArray(Arg.Length, false)))
+            {
+                return Uint64ToBitArray(1, Arg.Length);
+            }
+
             BitArray Result = Arg;
 
             for (BitArray i = Uint64ToBitArray(1, Arg.Length);
@@ -858,6 +877,11 @@ namespace Big_Ints_.NET
 
         public override string ToString()
         {
+            if (CompareBitArrays(Data, new BitArray(Data.Length, false)))
+            {
+                return "0";
+            }
+
             string Result = "";
             bool IsSignificant = false;
 
@@ -893,15 +917,6 @@ namespace Big_Ints_.NET
             return HashCode.Combine(Data);
         }
 
-        public U ToIBigIntsInterface<U>() where U : IBigInts.BigIntsBaseConstraints, new()
-        {
-            U Result = new U
-            {
-                Data = Data
-            };
-            return Result;
-        }
-
         #endregion
 
         #region Operators
@@ -925,7 +940,7 @@ namespace Big_Ints_.NET
         #region Comparsion operators
         public static bool operator ==(BigIntsBase<T> First, BigIntsBase<T> Second)
         {
-            if (First.Data == Second.Data)
+            if (CompareBitArrays(First.Data, Second.Data))
             {
                 return true;
             }
@@ -935,7 +950,7 @@ namespace Big_Ints_.NET
 
         public static bool operator !=(BigIntsBase<T> First, BigIntsBase<T> Second)
         {
-            if (First.Data != Second.Data)
+            if (!CompareBitArrays(First.Data, Second.Data))
             {
                 return true;
             }
