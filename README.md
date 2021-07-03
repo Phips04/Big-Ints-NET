@@ -1,18 +1,17 @@
 # Big-Ints-NET
-Types for big integers based on bit arrays providing up to 16384 bits, developed for Microsoft .NET core
+Big-Ints-NET provides Types that represent exceptional large unsigned integers.
+The spectrum reaches from 128 to 16384 bits. The given types derive from a common base class which makes it easy to create new types.
 
-This project is based on a former version written in C++. Besides the translation I did some further improvements to optimize the reuse of
-code. The final types are based on an abstract and generic base class, and all of them implement an interface which includes the internal
-BitArray. The types available provide 128, 256, ..., 16384 bits to store numbers with up to 4932 decimal digits.
-
-The types give the following arithmetic methods to their objects
--Add
--Subtract
--Multiply
--Divide
+The following arithmetic functions are built in:
+-Addition
+-Subtraction
+-Multiplication
+-Division
 -Modulo
 -Factorial
 -Logarithm
 -Square root
 
-Updates in future might come, but not in the next weeks
+There are several auxilliary functions included, e.g. converters.
+
+The code is licensed under the GNU license.
